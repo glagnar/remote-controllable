@@ -9,9 +9,9 @@
 import Foundation
 import Socket_IO_Client_Swift
 
-class RemoteControllableApp {
+public final class RemoteControllableApp {
     
-    static let sharedInstance = RemoteControllableApp()
+    public static let sharedInstance = RemoteControllableApp()
     
     private var remoteOverlay: UIView?
     private var socket: SocketIOClient?
@@ -20,12 +20,12 @@ class RemoteControllableApp {
         
     }
     
-    func startConnection(url: String = "server.itadvice.dk:8006") {
+    public func startConnection(url: String = "server.itadvice.dk:8006") {
         socket = SocketIOClient(socketURL: url, options: [.Log(false), .ForcePolling(true)])
         setupHandlers()
     }
     
-    func isConnected() -> Bool {
+    public func isConnected() -> Bool {
         if let socket = socket {
             return socket.status == SocketIOClientStatus.Connected ? true : false
         } else {
@@ -33,7 +33,7 @@ class RemoteControllableApp {
         }
     }
     
-    func stopConnection() {
+    public func stopConnection() {
         socket?.close()
     }
     
