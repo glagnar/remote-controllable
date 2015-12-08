@@ -101,7 +101,6 @@ public final class RemoteControllableApp {
     
     private func drawCircleOnOverlay(x: Double, y: Double) {
         if let overlay = remoteOverlay {
-            
             let pointX = overlay.frame.size.width * CGFloat(x)
             let pointY = overlay.frame.size.height * CGFloat(y)
             
@@ -132,7 +131,6 @@ public final class RemoteControllableApp {
     }
     
     private func requestSupport() {
-        
         guard socket?.status == SocketIOClientStatus.Connected else {
             debugPrint("Remote Connection Not Connected - Will not transmit request support")
             return
@@ -154,7 +152,6 @@ public final class RemoteControllableApp {
     }
     
     private func transmitScreen() {
-        
         guard socket?.status == SocketIOClientStatus.Connected else {
             debugPrint("Remote Connection Not Connected - Will not transmit screenshot")
             return
@@ -172,8 +169,6 @@ public final class RemoteControllableApp {
             }
         }
         
-        // Kald methoden igen, i baggrunden / forgrunden
-        //let q_queue = dispatch_get_main_queue()
         let q_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)
         let delayInSeconds:Int64 = 1
         let popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * 1000000000)
