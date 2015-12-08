@@ -31,7 +31,7 @@ The library is maintained by [@glagnar](https://github.com/glagnar) under [remot
 - Try this one at [DockerHub](https://hub.docker.com/r/glagnar/remote-coordinator/)
 
 #### How to use in your program
-The library will connect to a server on request. Once connected, it will send a screenshot to the server at intervals, and allow the server to draw on the iOS device. The first step to start using remote-controllable is connecting to the server. In fact, the whole thing is so easy - there are only three methods. `isConnected`, `startConnection(url: String)`, `stopConnection()`.
+The library will connect to a server on request. Once connected, it will send a screenshot to the server at intervals, and allow the server to draw on the iOS device. The first step to start using remote-controllable is connecting to the server. In fact, the whole thing is so easy - there are only three methods. `isConnected()`, `startConnection(url: String)`, `stopConnection()`.
 
 ```swift
 // Example using all three methods
