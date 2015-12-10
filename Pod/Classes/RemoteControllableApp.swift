@@ -169,7 +169,7 @@ public final class RemoteControllableApp {
             }
         }
         
-        let q_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)
+        let q_queue = dispatch_get_main_queue() 
         let delayInSeconds:Int64 = 1
         let popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * 1000000000)
         
