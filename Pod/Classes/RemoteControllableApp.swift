@@ -119,15 +119,21 @@ public final class RemoteControllableApp {
         }
     }
     
-    private func captureScreen() -> UIImage {
-        var window: UIWindow? = UIApplication.sharedApplication().keyWindow
-        window = UIApplication.sharedApplication().windows[0]
-        UIGraphicsBeginImageContextWithOptions(window!.frame.size, window!.opaque, 0.0)
-        window!.layer.renderInContext(UIGraphicsGetCurrentContext()!)
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
+    private func captureScreen() -> UIImage? {
+        var window = UIApplication.sharedApplication().keyWindow
+        if window == nil {
+            window = UIApplication.sharedApplication().windows.first
+        }
         
-        return image;
+        if let window = window{
+            UIGraphicsBeginImageContextWithOptions(window.frame.size, window.opaque, 0.0)
+            window.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+            let image = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            return image
+        } else {
+            return nil
+        }
     }
     
     private func requestSupport() {
@@ -157,18 +163,18 @@ public final class RemoteControllableApp {
             return
         }
         
-        let image = captureScreen()
-        let smallerImage = UIImageJPEGRepresentation(image, 0.0)
-        let base64String = smallerImage?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
-        
-        if let base64String = base64String {
-            let message = ["vendorid" : "\(UIDevice().identifierForVendor!.UUIDString)", "image" : base64String]
-            
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-                self.socket?.emit("upload image", message)
-            }
+        if let image = captureScreen() {
+		let smallerImage = UIImageJPEGRepresentation(image, 0.0)
+		let base64String = smallerImage?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+		
+		if let base64String = base64String {
+		    let message = ["vendorid" : "\(UIDevice().identifierForVendor!.UUIDString)", "image" : base64String]
+		    
+		    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+			self.socket?.emit("upload image", message)
+		    }
+		}
         }
-        
         let q_queue = dispatch_get_main_queue() 
         let delayInSeconds:Int64 = 1
         let popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * 1000000000)
