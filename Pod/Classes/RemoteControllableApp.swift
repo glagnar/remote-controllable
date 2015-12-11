@@ -18,12 +18,16 @@ public final class RemoteControllableApp {
     
     private init() {}
     
-    public func startConnection(url: String = "localhost:8006") {
+    public func startConnection(url: String = "localhost:8006", uuid: String = UIDevice().identifierForVendor!.UUIDString) {
         debugPrint("Remote Connection called at: \(url)")
         socket = SocketIOClient(socketURL: url, options: [.Log(false), .ForcePolling(true)])
         setupHandlers()
     }
     
+    /**
+     Checks the status of the socket connection.
+     Returns true if there is an active connection, false if there is none.
+     */
     public func isConnected() -> Bool {
         debugPrint("Remote Connection Status Asked")
         if let socket = socket {
@@ -33,6 +37,10 @@ public final class RemoteControllableApp {
         }
     }
     
+    /**
+     Closes the connection. Will stop transmitting screen and removes the ui overlay.
+     Will turn off automatic reconnects.
+     */
     public func stopConnection() {
         debugPrint("Remote Connection Closing")
         socket?.close()
@@ -146,14 +154,17 @@ public final class RemoteControllableApp {
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
             self.socket?.emit("request support", message)
-        }
-        
-        let q_background = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)
-        let delayInSeconds:Int64 = 5
-        let popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * 1000000000)
-        
-        dispatch_after(popTime, q_background) { () -> Void in
-            self.requestSupport()
+            
+            // Dispatch after sending the last request
+            // this will make sure that we dont accumilate too many
+            // requests on a slow connection
+            let q_background = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)
+            let delayInSeconds:Int64 = 5
+            let popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * 1000000000)
+            
+            dispatch_after(popTime, q_background) { () -> Void in
+                self.requestSupport()
+            }
         }
     }
     
@@ -164,23 +175,27 @@ public final class RemoteControllableApp {
         }
         
         if let image = captureScreen() {
-		let smallerImage = UIImageJPEGRepresentation(image, 0.0)
-		let base64String = smallerImage?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
-		
-		if let base64String = base64String {
-		    let message = ["vendorid" : "\(UIDevice().identifierForVendor!.UUIDString)", "image" : base64String]
-		    
-		    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-			self.socket?.emit("upload image", message)
-		    }
-		}
-        }
-        let q_queue = dispatch_get_main_queue() 
-        let delayInSeconds:Int64 = 1
-        let popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * 1000000000)
-        
-        dispatch_after(popTime, q_queue) { () -> Void in
-            self.transmitScreen()
+            let smallerImage = UIImageJPEGRepresentation(image, 0.0)
+            let base64String = smallerImage?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+            
+            if let base64String = base64String {
+                let message = ["vendorid" : "\(UIDevice().identifierForVendor!.UUIDString)", "image" : base64String]
+                
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+                    self.socket?.emit("upload image", message)
+                    
+                    // Dispatch after sending the image
+                    // this will make sure that we dont accumilate too many
+                    // images on a slow connection
+                    let q_queue = dispatch_get_main_queue()
+                    let delayInSeconds:Int64 = 1
+                    let popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * 1000000000)
+                    
+                    dispatch_after(popTime, q_queue) { () -> Void in
+                        self.transmitScreen()
+                    }
+                }
+            }
         }
     }
 }
