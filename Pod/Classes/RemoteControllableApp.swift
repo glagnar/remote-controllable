@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import Socket_IO_Client_Swift
+import SocketIOClientSwift
 
 public final class RemoteControllableApp {
     
