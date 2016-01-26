@@ -15,11 +15,13 @@ public final class RemoteControllableApp {
     
     private var remoteOverlay: UIView?
     private var socket: SocketIOClient?
+    private var vendorId: String = UIDevice().identifierForVendor!.UUIDString
     
     private init() {}
     
     public func startConnection(url: String = "localhost:8006", uuid: String = UIDevice().identifierForVendor!.UUIDString) {
         debugPrint("Remote Connection called at: \(url)")
+        vendorId = uuid;
         socket = SocketIOClient(socketURL: url, options: [.Log(false), .ForcePolling(true)])
         setupHandlers()
     }
@@ -150,7 +152,7 @@ public final class RemoteControllableApp {
             return
         }
         
-        let message = ["vendorid" : "\(UIDevice().identifierForVendor!.UUIDString)"]
+        let message = ["vendorid" : "\(vendorId)"]
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
             self.socket?.emit("request support", message)
@@ -179,7 +181,7 @@ public final class RemoteControllableApp {
             let base64String = smallerImage?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
             
             if let base64String = base64String {
-                let message = ["vendorid" : "\(UIDevice().identifierForVendor!.UUIDString)", "image" : base64String]
+                let message = ["vendorid" : "\(vendorId)", "image" : base64String]
                 
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
                     self.socket?.emit("upload image", message)
