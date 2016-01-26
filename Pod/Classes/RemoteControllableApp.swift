@@ -43,7 +43,7 @@ public final class RemoteControllableApp {
      */
     public func stopConnection() {
         debugPrint("Remote Connection Closing")
-        socket?.close()
+        socket?.disconnect()
         socket = nil
     }
     
