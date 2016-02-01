@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "remote-controllable"
-  s.version          = "0.0.10"
+  s.version          = "0.0.11"
   s.summary          = "Enable remote control of application"
 
   s.description = <<-DESC
