@@ -7,19 +7,27 @@
 //
 
 import UIKit
+import WebKit
 
 class SecondViewController: UIViewController {
 
+    @IBOutlet weak var webContainer: UIView!
+    
+    var webView: WKWebView?
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let request = NSURLRequest(URL: NSURL(string: "http://www.dr.dk")!)
+        webView?.loadRequest(request)
+        
         // Do any additional setup after loading the view, typically from a nib.
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func loadView() {
+        super.loadView()
+        self.webView = WKWebView()
+        // self.webView?.snapshotViewAfterScreenUpdates(true)
+        self.view = self.webView
     }
-
-
 }
-

@@ -130,14 +130,14 @@ public final class RemoteControllableApp {
     }
     
     private func captureScreen() -> UIImage? {
-        var window = UIApplication.sharedApplication().keyWindow
-        if window == nil {
-            window = UIApplication.sharedApplication().windows.first
-        }
+        let windows = UIApplication.sharedApplication().windows
         
-        if let window = window{
-            UIGraphicsBeginImageContextWithOptions(window.frame.size, window.opaque, 0.0)
-            window.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        if let _ = windows.first {
+            UIGraphicsBeginImageContextWithOptions(windows.first!.frame.size, windows.first!.opaque, 0.0)
+            for window in windows {
+                UIGraphicsGetCurrentContext()
+                window.drawViewHierarchyInRect(CGRect(x: 0, y: 0, width: window.frame.width, height: window.frame.height), afterScreenUpdates: false)
+            }
             let image = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
             return image
