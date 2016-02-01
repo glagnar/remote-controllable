@@ -1,0 +1,6 @@
+framework module remote_controllable {
+  umbrella header "remote-controllable-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -22,7 +22,7 @@ public final class RemoteControllableApp {
     public func startConnection(url: String = "localhost:8006", uuid: String = UIDevice().identifierForVendor!.UUIDString) {
         debugPrint("Remote Connection called at: \(url)")
         vendorId = uuid;
-        socket = SocketIOClient(socketURL: NSURL(string: url)!, options: [.Log(true), .ForcePolling(true)])
+        socket = SocketIOClient(socketURL: NSURL(string: url)!, options: [.Log(false), .ForcePolling(false)])
         setupHandlers()
     }
     

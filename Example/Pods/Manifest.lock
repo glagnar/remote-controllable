@@ -1,0 +1,13 @@
+PODS:
+  - remote-controllable (0.0.9):
+    - Socket.IO-Client-Swift
+  - Socket.IO-Client-Swift (5.3.1)
+
+DEPENDENCIES:
+  - remote-controllable
+
+SPEC CHECKSUMS:
+  remote-controllable: cfb47f03b18479016075001e12f718a07dabb43e
+  Socket.IO-Client-Swift: abfed28a1e4ce09fb12d75cfaecc5b719bc584ea
+
+COCOAPODS: 0.39.0
