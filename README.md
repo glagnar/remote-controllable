@@ -10,7 +10,7 @@ This library is written to allow an app to be supported remotely. Think 'teamvie
 The library is maintained by [@glagnar](https://github.com/glagnar) under [remote-controllable](https://github.com/swiftreactive). You can reach me at [thomas.gilbert@alexandra.dk](mailto://thomas.gilbert@alexandra.dk) for help or if you have a comment about the library.
 
 ## Features
-- Swift 2.1 compatible (XCode 7.1).
+- Swift 2.1 compatible (Xcode 7.1).
 - For **beginners**
 - Built for iOS
 - Actively supported
