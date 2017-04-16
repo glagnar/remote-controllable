@@ -16,11 +16,11 @@ class FirstViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let request = NSURLRequest(URL: NSURL(string: "http://www.dr.dk")!)
+        let request = URLRequest(url: URL(string: "http://www.dr.dk")!)
         webView.loadRequest(request)
     }
 
-    @IBAction func doSupport(sender: UIButton) {
+    @IBAction func doSupport(_ sender: UIButton) {
         RemoteControllableApp.sharedInstance.isConnected() ?
             RemoteControllableApp.sharedInstance.stopConnection() :
             RemoteControllableApp.sharedInstance.startConnection("http://testserver:8006", uuid: "My UNIQUE ID")

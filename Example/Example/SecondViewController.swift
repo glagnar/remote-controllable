@@ -18,8 +18,8 @@ class SecondViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let request = NSURLRequest(URL: NSURL(string: "http://www.dr.dk")!)
-        webView?.loadRequest(request)
+        let request = URLRequest(url: URL(string: "http://www.dr.dk")!)
+        webView?.load(request)
         
         // Do any additional setup after loading the view, typically from a nib.
     }

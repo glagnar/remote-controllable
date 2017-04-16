@@ -104,12 +104,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E90D6A361C5F7CF500B45A7E /* Build configuration list for PBXNativeTarget "Example" */;
 			buildPhases = (
-				4F0555B8A27947495439ACC8 /* Check Pods Manifest.lock */,
+				4F0555B8A27947495439ACC8 /* [CP] Check Pods Manifest.lock */,
 				E90D6A1E1C5F7CF500B45A7E /* Sources */,
 				E90D6A1F1C5F7CF500B45A7E /* Frameworks */,
 				E90D6A201C5F7CF500B45A7E /* Resources */,
-				623B760A73044CD9A9E20829 /* Embed Pods Frameworks */,
-				EA1E7891550EEC13AC19C5E1 /* Copy Pods Resources */,
+				623B760A73044CD9A9E20829 /* [CP] Embed Pods Frameworks */,
+				EA1E7891550EEC13AC19C5E1 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -132,6 +132,7 @@
 				TargetAttributes = {
 					E90D6A211C5F7CF500B45A7E = {
 						CreatedOnToolsVersion = 7.2;
+						LastSwiftMigration = 0830;
 					};
 				};
 			};
@@ -167,29 +168,29 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4F0555B8A27947495439ACC8 /* Check Pods Manifest.lock */ = {
+		4F0555B8A27947495439ACC8 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		623B760A73044CD9A9E20829 /* Embed Pods Frameworks */ = {
+		623B760A73044CD9A9E20829 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -197,14 +198,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Example/Pods-Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		EA1E7891550EEC13AC19C5E1 /* Copy Pods Resources */ = {
+		EA1E7891550EEC13AC19C5E1 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -343,6 +344,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = dk.alexandra.remotecontrollable.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -359,6 +361,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = dk.alexandra.remotecontrollable.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
