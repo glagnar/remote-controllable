@@ -7,22 +7,22 @@
 //
 
 import Foundation
-import SocketIOClientSwift
+import SocketIO
 
 public final class RemoteControllableApp {
     
     public static let sharedInstance = RemoteControllableApp()
     
-    private var remoteOverlay: UIView?
-    private var socket: SocketIOClient?
-    private var vendorId: String = UIDevice().identifierForVendor!.UUIDString
+    fileprivate var remoteOverlay: UIView?
+    fileprivate var socket: SocketIOClient?
+    fileprivate var vendorId: String = UIDevice().identifierForVendor!.uuidString
     
-    private init() {}
+    fileprivate init() {}
     
-    public func startConnection(url: String = "localhost:8006", uuid: String = UIDevice().identifierForVendor!.UUIDString) {
+    public func startConnection(_ url: String = "localhost:8006", uuid: String = UIDevice().identifierForVendor!.uuidString) {
         debugPrint("Remote Connection called at: \(url)")
         vendorId = uuid;
-        socket = SocketIOClient(socketURL: NSURL(string: url)!, options: [.Log(false), .ForcePolling(false)])
+        socket = SocketIOClient(socketURL: URL(string: url)!, config: [.log(true), .forcePolling(true)])
         setupHandlers()
     }
     
@@ -33,7 +33,7 @@ public final class RemoteControllableApp {
     public func isConnected() -> Bool {
         debugPrint("Remote Connection Status Asked")
         if let socket = socket {
-            return socket.status == SocketIOClientStatus.Connected ? true : false
+            return socket.status == SocketIOClientStatus.connected ? true : false
         } else {
             return false
         }
@@ -49,10 +49,10 @@ public final class RemoteControllableApp {
         socket = nil
     }
     
-    private func setupHandlers() {
+    fileprivate func setupHandlers() {
         socket?.on("draw dot") { [weak self] data, ack in
             debugPrint("Remote Connection Draw Dot \(data)")
-            if let coords = data[0] as? NSDictionary, x = coords["x"] as? Double, y = coords["y"] as? Double  {
+            if let coords = data[0] as? NSDictionary, let x = coords["x"] as? Double, let y = coords["y"] as? Double  {
                 self?.drawCircleOnOverlay(x, y: y)
             }
         }
@@ -75,10 +75,10 @@ public final class RemoteControllableApp {
         socket?.connect()
     }
     
-    private func addRemotePresentationOverlay() {
-        var window = UIApplication.sharedApplication().keyWindow
+    fileprivate func addRemotePresentationOverlay() {
+        var window = UIApplication.shared.keyWindow
         if window == nil {
-            window = UIApplication.sharedApplication().windows.first
+            window = UIApplication.shared.windows.first
         }
         
         if let overlay = remoteOverlay {
@@ -86,57 +86,57 @@ public final class RemoteControllableApp {
             remoteOverlay = nil
         }
         
-        if let window = window where remoteOverlay == nil {
+        if let window = window, remoteOverlay == nil {
             let overlay = UIView(frame: window.frame)
             overlay.layer.cornerRadius=2
             overlay.layer.borderWidth=5
-            overlay.layer.borderColor = UIColor.redColor().CGColor
-            overlay.opaque = true
-            overlay.userInteractionEnabled = false
-            overlay.layer.zPosition = CGFloat(FLT_MAX)
+            overlay.layer.borderColor = UIColor.red.cgColor
+            overlay.isOpaque = true
+            overlay.isUserInteractionEnabled = false
+            overlay.layer.zPosition = CGFloat(CGFloat.greatestFiniteMagnitude)
             remoteOverlay = overlay
         }
         
-        if let overlay = remoteOverlay, window = window {
+        if let overlay = remoteOverlay, let window = window {
             window.addSubview(overlay)
         }
     }
     
-    private func removeRemotePresentationOverlay() {
+    fileprivate func removeRemotePresentationOverlay() {
         if let overlay = remoteOverlay {
             overlay.removeFromSuperview()
             remoteOverlay = nil
         }
     }
     
-    private func drawCircleOnOverlay(x: Double, y: Double) {
+    fileprivate func drawCircleOnOverlay(_ x: Double, y: Double) {
         if let overlay = remoteOverlay {
             let pointX = overlay.frame.size.width * CGFloat(x)
             let pointY = overlay.frame.size.height * CGFloat(y)
             
-            let circle = Circle(frame: CGRectMake(pointX - 50, pointY - 50 ,50,50))
-            circle.opaque = true
+            let circle = Circle(frame: CGRect(x: pointX - 50, y: pointY - 50 ,width: 50,height: 50))
+            circle.isOpaque = true
             circle.layer.cornerRadius = 25
             circle.clipsToBounds = true
             overlay.addSubview(circle)
             
-            UIView.animateWithDuration(0.8, animations: { () -> Void in
+            UIView.animate(withDuration: 0.8, animations: { () -> Void in
                 circle.alpha = 0
-                circle.transform = CGAffineTransformMakeScale(1.5, 1.5)
-                }, completion: { (ok) -> Void in
-                    circle.removeFromSuperview()
+                circle.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+            }, completion: { (ok) -> Void in
+                circle.removeFromSuperview()
             })
         }
     }
     
-    private func captureScreen() -> UIImage? {
-        let windows = UIApplication.sharedApplication().windows
+    fileprivate func captureScreen() -> UIImage? {
+        let windows = UIApplication.shared.windows
         
         if let _ = windows.first {
-            UIGraphicsBeginImageContextWithOptions(windows.first!.frame.size, windows.first!.opaque, 0.0)
+            UIGraphicsBeginImageContextWithOptions(windows.first!.frame.size, windows.first!.isOpaque, 0.0)
             for window in windows {
                 UIGraphicsGetCurrentContext()
-                window.drawViewHierarchyInRect(CGRect(x: 0, y: 0, width: window.frame.width, height: window.frame.height), afterScreenUpdates: false)
+                window.drawHierarchy(in: CGRect(x: 0, y: 0, width: window.frame.width, height: window.frame.height), afterScreenUpdates: false)
             }
             let image = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
@@ -146,54 +146,54 @@ public final class RemoteControllableApp {
         }
     }
     
-    private func requestSupport() {
-        guard socket?.status == SocketIOClientStatus.Connected else {
+    fileprivate func requestSupport() {
+        guard socket?.status == SocketIOClientStatus.connected else {
             debugPrint("Remote Connection Not Connected - Will not transmit request support")
             return
         }
         
         let message = ["vendorid" : "\(vendorId)"]
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+        DispatchQueue.global(qos: .default).async {
             self.socket?.emit("request support", message)
             
             // Dispatch after sending the last request
             // this will make sure that we dont accumilate too many
             // requests on a slow connection
-            let q_background = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)
+            let q_background = DispatchQueue.global(qos: .background)
             let delayInSeconds:Int64 = 5
-            let popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * 1000000000)
+            let popTime = DispatchTime.now() + Double(delayInSeconds * 1000000000) / Double(NSEC_PER_SEC)
             
-            dispatch_after(popTime, q_background) { () -> Void in
+            q_background.asyncAfter(deadline: popTime) { () -> Void in
                 self.requestSupport()
             }
         }
     }
     
-    private func transmitScreen() {
-        guard socket?.status == SocketIOClientStatus.Connected else {
+    fileprivate func transmitScreen() {
+        guard socket?.status == SocketIOClientStatus.connected else {
             debugPrint("Remote Connection Not Connected - Will not transmit screenshot")
             return
         }
         
         if let image = captureScreen() {
             let smallerImage = UIImageJPEGRepresentation(image, 0.0)
-            let base64String = smallerImage?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+            let base64String = smallerImage?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
             
             if let base64String = base64String {
                 let message = ["vendorid" : "\(vendorId)", "image" : base64String]
                 
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+                DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
                     self.socket?.emit("upload image", message)
                     
                     // Dispatch after sending the image
                     // this will make sure that we dont accumilate too many
                     // images on a slow connection
-                    let q_queue = dispatch_get_main_queue()
+                    let q_queue = DispatchQueue.main
                     let delayInSeconds:Int64 = 1
-                    let popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * 1000000000)
+                    let popTime = DispatchTime.now() + Double(delayInSeconds * 1000000000) / Double(NSEC_PER_SEC)
                     
-                    dispatch_after(popTime, q_queue) { () -> Void in
+                    q_queue.asyncAfter(deadline: popTime) { () -> Void in
                         self.transmitScreen()
                     }
                 }
@@ -203,9 +203,9 @@ public final class RemoteControllableApp {
 }
 
 private class Circle: UIView {
-    override func drawRect(rect: CGRect) {
-        let path = UIBezierPath(ovalInRect: rect)
-        UIColor.blueColor().setFill()
+    override func draw(_ rect: CGRect) {
+        let path = UIBezierPath(ovalIn: rect)
+        UIColor.blue.setFill()
         path.fill()
     }
 }
