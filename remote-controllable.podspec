@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "remote-controllable"
-  s.version          = "0.0.12"
+  s.version          = "0.1.1"
   s.summary          = "Enable remote control of application"
 
   s.description = <<-DESC
@@ -26,7 +26,7 @@ Pod::Spec.new do |s|
   s.author           = { "Thomas Gilbert" => "thomas.gilbert@alexandra.dk" }
   s.source           = { :git => "https://github.com/glagnar/remote-controllable.git", :tag => s.version.to_s }
 
-  s.platform     = :ios, '8.0'
+  s.platform     = :ios, '10.0'
   s.requires_arc = true
 
   s.source_files = 'Pod/Classes/**/*'
