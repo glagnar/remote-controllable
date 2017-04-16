@@ -10,7 +10,7 @@ This library is written to allow an app to be supported remotely. Think 'teamvie
 The library is maintained by [@glagnar](https://github.com/glagnar) under [remote-controllable](https://github.com/swiftreactive). You can reach me at [thomas.gilbert@alexandra.dk](mailto://thomas.gilbert@alexandra.dk) for help or if you have a comment about the library.
 
 ## Features
-- Swift 2.1 compatible (Xcode 7.1).
+- Swift 3 compatible (Xcode 8.3).
 - For **beginners**
 - Built for iOS
 - Actively supported
@@ -53,7 +53,7 @@ func yourFunction2() {
 }
 ```
 ## Thanks
-This could not be possible if it were'nt for the guy's behind [socket.io](http://www.socket.io)
+This could not be possible if it were'nt for the guy's behind [socket.io](http://socket.io)
 
 #### Note
 This library can be made available on different licensing terms. Contact me for more information.
