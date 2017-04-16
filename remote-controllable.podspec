@@ -1,17 +1,10 @@
-#
-# Be sure to run `pod lib lint remote-controllable.podspec' to ensure this is a
-# valid spec before submitting.
-#
-# Any lines starting with a # are optional, but their use is encouraged
-# To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html
-#
-
 Pod::Spec.new do |s|
-  s.name             = "remote-controllable"
-  s.version          = "0.1.2"
-  s.summary          = "Enable remote control of application"
 
-  s.description = <<-DESC
+  s.name         = "remote-controllable"
+  s.version      = "0.1.3"
+  s.summary      = "Enable remote control of application"
+
+  s.description  = <<-DESC
                      Used in connection with websocket server to enable remote controll of app
                      Features:
                      1. Connects to socket server broadcasting the need for support
@@ -21,20 +14,25 @@ Pod::Spec.new do |s|
                    DESC
 
   s.homepage         = "http://www.alexandra.dk"
- 
-  s.license 	     = { :type => 'aGPL', :file => 'LICENSE' } 
-  s.author           = { "Thomas Gilbert" => "thomas.gilbert@alexandra.dk" }
-  s.source           = { :git => "https://github.com/glagnar/remote-controllable.git", :tag => s.version.to_s }
 
-  s.platform     = :ios, '10.0'
+  s.license         = { :type => 'aGPL', :file => 'LICENSE' }
+  s.author          = { "Thomas Gilbert" => "thomas.gilbert@alexandra.dk" }
+
+  s.social_media_url   = "http://twitter.com/thomasbjgilbert"
+
+  s.platform     = :ios, "10.0"
+
+  # ――― Source Location ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
+  #
+  #  Specify the location from where the source should be retrieved.
+  #  Supports git, hg, bzr, svn and HTTP.
+  #
+
+  s.source       = { :git => "https://github.com/glagnar/remote-controllable.git", :tag => "#{s.version}" }
+  s.source_files  = 'Pod/Classes/**/*'
+
   s.requires_arc = true
 
-  s.source_files = 'Pod/Classes/**/*'
-  s.resource_bundles = {
-    'remote-controllable' => ['Pod/Assets/*.png']
-  }
+  s.dependency "Socket.IO-Client-Swift", "~> 8.3.3"
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  s.frameworks = 'UIKit', 'Foundation'
-  s.dependency 'Socket.IO-Client-Swift'
 end
