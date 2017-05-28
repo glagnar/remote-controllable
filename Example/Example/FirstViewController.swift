@@ -23,7 +23,7 @@ class FirstViewController: UIViewController {
     @IBAction func doSupport(_ sender: UIButton) {
         RemoteControllableApp.sharedInstance.isConnected() ?
             RemoteControllableApp.sharedInstance.stopConnection() :
-            RemoteControllableApp.sharedInstance.startConnection("http://testserver:8006", uuid: "My UNIQUE ID")
+            RemoteControllableApp.sharedInstance.startConnection("http://localhost:8006", uuid: "SOMEID")
     }
 }
 
