@@ -7,7 +7,7 @@
 ## What is remote-controllable?
 This library is written to allow an app to be supported remotely. Think 'teamviewer' inside your app. Once the app is connected, screenshots are streamed to the server, and in turn, the server can draw dots at specific locations on the screen. Thanks to remote-controllable you can offer remote support in your app, with only a couple of lines of code.
 
-The library is maintained by [@glagnar](https://github.com/glagnar) under [remote-controllable](https://github.com/swiftreactive). You can reach me at [thomas.gilbert@alexandra.dk](mailto://thomas.gilbert@alexandra.dk) for help or if you have a comment about the library.
+The library is maintained by [@glagnar](https://github.com/glagnar) under [remote-controllable](https://github.com/glagnar/remote-controllable). You can reach me at [thomas.gilbert@alexandra.dk](mailto://thomas.gilbert@alexandra.dk) for help or if you have a comment about the library.
 
 ## Features
 - Swift 3 compatible (Xcode 8.3).
