@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "remote-controllable"
-  s.version      = "0.1.5"
+  s.version      = "0.2.0"
   s.summary      = "Enable remote control of application"
 
   s.description  = <<-DESC
@@ -33,6 +33,6 @@ Pod::Spec.new do |s|
 
   s.requires_arc = true
 
-  s.dependency "Socket.IO-Client-Swift", "~> 8.3.3"
+  s.dependency "Socket.IO-Client-Swift", "~> 10.0.0"
 
 end
