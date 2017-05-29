@@ -3,6 +3,7 @@
 [![Twitter: @thomasbjgilbert](https://img.shields.io/badge/contact-@thomasbjgilbert-blue.svg?style=flat)](https://twitter.com/thomasbjgilbert)
 [![Language: Swift](https://img.shields.io/badge/lang-Swift-yellow.svg?style=flat)](https://developer.apple.com/swift/)
 [![License: Mit](https://img.shields.io/badge/license-AGPL-lightgrey.svg?style=flat)](http://opensource.org/licenses/AGPL-3.0)
+[![CocoaPods](https://img.shields.io/cocoapods/dt/remote-controllable.svg)](https://cocoapods.org/pods/remote-controllable)
 
 ## What is remote-controllable?
 This library is written to allow an app to be supported remotely. Think 'teamviewer' inside your app. Once the app is connected, screenshots are streamed to the server, and in turn, the server can draw dots at specific locations on the screen. Thanks to remote-controllable you can offer remote support in your app, with only a couple of lines of code.
